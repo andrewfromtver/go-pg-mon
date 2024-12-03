@@ -1,5 +1,5 @@
 ARG ALPINE_VER="3.20.3"
-ARG GO_VER="1.23.0"
+ARG GO_VER="1.23.1"
 
 # Stage 1: Build Go app
 FROM golang:${GO_VER}-alpine as builder
