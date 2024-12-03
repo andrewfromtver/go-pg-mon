@@ -12,9 +12,8 @@ import (
 )
 
 type QueryRequest struct {
-	DSN        string `json:"dsn"`
-	Query      string `json:"query"`
-	OutputFile string `json:"output"`
+	DSN   string `json:"dsn"`
+	Query string `json:"query"`
 }
 
 func executeQuery(w http.ResponseWriter, r *http.Request) {
@@ -29,8 +28,8 @@ func executeQuery(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate input parameters
-	if req.DSN == "" || req.Query == "" || req.OutputFile == "" {
-		http.Error(w, "DSN, query, and output file are required.", http.StatusBadRequest)
+	if req.DSN == "" || req.Query == "" {
+		http.Error(w, "DSN and query are required.", http.StatusBadRequest)
 		return
 	}
 
