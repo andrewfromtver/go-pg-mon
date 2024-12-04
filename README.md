@@ -25,7 +25,7 @@ The request body must be a JSON object containing the following fields:
 
 ##### Example - curl command:
 ```Bash
-curl -X POST http://localhost:8080/query \
+curl -X POST http://localhost:8080/db/custom-query \
   -H "Content-Type: application/json" \
   -d '{
     "dsn": "postgres://user:password@localhost:5432/dbname",
@@ -58,7 +58,7 @@ The request body must be a JSON object containing the following fields:
 
 ##### Example - curl command:
 ```Bash
-curl -X POST http://localhost:8080/query \
+curl -X POST http://localhost:8080/db/long-running-queries \
   -H "Content-Type: application/json" \
   -d '{
     "dsn": "postgres://user:password@localhost:5432/dbname",
