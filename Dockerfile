@@ -16,6 +16,7 @@ FROM alpine:${ALPINE_VER}
 RUN addgroup -S api_group && adduser -S api_user -G api_group
 WORKDIR /home/api_user/
 COPY --from=builder /app/pg_query_api .
+COPY sql sql
 RUN chown api_user:api_group /home/api_user/pg_query_api
 USER api_user
 
