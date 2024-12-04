@@ -2,7 +2,7 @@ ARG ALPINE_VER="3.20.3"
 ARG GO_VER="1.23.1"
 
 # Stage 1: Build Go app
-FROM golang:${GO_VER}-alpine as builder
+FROM golang:${GO_VER}-alpine AS builder
 
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -22,4 +22,3 @@ USER api_user
 EXPOSE 8080
 
 CMD ["./pg_query_api"]
-
