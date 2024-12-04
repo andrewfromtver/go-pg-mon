@@ -29,7 +29,7 @@ func executeQuery(w http.ResponseWriter, r *http.Request) {
 
 	// Validate input parameters
 	if req.DSN == "" || req.Query == "" {
-		http.Error(w, "DSN and query are required.", http.StatusBadRequest)
+		http.Error(w, "dsn, query are required", http.StatusBadRequest)
 		return
 	}
 
