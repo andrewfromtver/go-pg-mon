@@ -4,7 +4,7 @@ This API allows users to execute `SELECT` queries on a PostgreSQL database and r
 
 ## Endpoints
 
-### `POST /swagger`
+### `GET /swagger`
 
 This endpoint serves the `Swagger UI` documentation for the API. It provides an interactive interface for users to explore and test the available API endpoints, including the ability to execute queries, view results, and understand the structure of requests and responses.
 
