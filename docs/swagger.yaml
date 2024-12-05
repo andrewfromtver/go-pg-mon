@@ -1,0 +1,137 @@
+basePath: /
+definitions:
+  main.LargestTablesRequest:
+    properties:
+      dsn:
+        type: string
+      query_limit:
+        type: integer
+    type: object
+  main.LongRunningQueriesRequest:
+    properties:
+      dsn:
+        type: string
+      pg_database:
+        type: string
+      query_duration:
+        type: string
+      query_state:
+        type: string
+    type: object
+  main.QueryRequest:
+    properties:
+      dsn:
+        type: string
+      query:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: andrewsarkisyan@gmail.com
+    name: Andranik Sarkisyan
+    url: https://www.linkedin.com/in/a-sarkisyan/
+  description: PostgreSQL database monitoring API.
+  title: Database Monitoring API
+  version: 0.0.1
+paths:
+  /db/custom-query:
+    post:
+      consumes:
+      - application/json
+      description: Execute a custom SQL SELECT query on the specified database.
+      parameters:
+      - description: Query Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.QueryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Query results
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: Invalid request body or parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Execute Custom Query
+      tags:
+      - Database
+  /db/largest-tables:
+    post:
+      consumes:
+      - application/json
+      description: Retrieve a list of the largest tables in the database by size.
+      parameters:
+      - description: Largest Tables Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.LargestTablesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Largest tables information
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: Invalid request body or parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Get Largest Tables
+      tags:
+      - Database
+  /db/long-running-queries:
+    post:
+      consumes:
+      - application/json
+      description: Get details of long-running queries in a PostgreSQL database.
+      parameters:
+      - description: Long-Running Queries Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.LongRunningQueriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Long-running queries
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: Invalid request body or parameters
+          schema:
+            type: string
+        "500":
+          description: Server error
+          schema:
+            type: string
+      summary: Retrieve Long-Running Queries
+      tags:
+      - Database
+swagger: "2.0"

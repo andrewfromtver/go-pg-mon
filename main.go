@@ -1,9 +1,18 @@
+// @title Database Monitoring API
+// @version 0.0.1
+// @description PostgreSQL database monitoring API.
+// @host localhost:8080
+// @BasePath /
+// @contact.name Andranik Sarkisyan
+// @contact.url https://www.linkedin.com/in/a-sarkisyan/
+// @contact.email andrewsarkisyan@gmail.com
 package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	_ "go_pg_mon/docs"
 	"log"
 	"net/http"
 	"os"
@@ -11,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 type QueryRequest struct {
@@ -28,6 +38,16 @@ type LargestTablesRequest struct {
 	QueryLimit int    `json:"query_limit"`
 }
 
+// @Summary Execute Custom Query
+// @Description Execute a custom SQL SELECT query on the specified database.
+// @Tags Database
+// @Accept json
+// @Produce json
+// @Param request body QueryRequest true "Query Request"
+// @Success 200 {object} []map[string]interface{} "Query results"
+// @Failure 400 {object} string "Invalid request body or parameters"
+// @Failure 500 {object} string "Server error"
+// @Router /db/custom-query [post]
 func executeQuery(w http.ResponseWriter, r *http.Request) {
 	// Set the response header to JSON
 	w.Header().Set("Content-Type", "application/json")
@@ -114,6 +134,17 @@ func executeQuery(w http.ResponseWriter, r *http.Request) {
 	// Respond with the JSON data
 	w.Write(jsonData)
 }
+
+// @Summary Retrieve Long-Running Queries
+// @Description Get details of long-running queries in a PostgreSQL database.
+// @Tags Database
+// @Accept json
+// @Produce json
+// @Param request body LongRunningQueriesRequest true "Long-Running Queries Request"
+// @Success 200 {object} []map[string]interface{} "Long-running queries"
+// @Failure 400 {object} string "Invalid request body or parameters"
+// @Failure 500 {object} string "Server error"
+// @Router /db/long-running-queries [post]
 func executeLongRunningQueries(w http.ResponseWriter, r *http.Request) {
 	// Set the response header to JSON
 	w.Header().Set("Content-Type", "application/json")
@@ -207,6 +238,17 @@ func executeLongRunningQueries(w http.ResponseWriter, r *http.Request) {
 	// Respond with the JSON data
 	w.Write(jsonData)
 }
+
+// @Summary Get Largest Tables
+// @Description Retrieve a list of the largest tables in the database by size.
+// @Tags Database
+// @Accept json
+// @Produce json
+// @Param request body LargestTablesRequest true "Largest Tables Request"
+// @Success 200 {object} []map[string]interface{} "Largest tables information"
+// @Failure 400 {object} string "Invalid request body or parameters"
+// @Failure 500 {object} string "Server error"
+// @Router /db/largest-tables [post]
 func executeLargestTables(w http.ResponseWriter, r *http.Request) {
 	// Set the response header to JSON
 	w.Header().Set("Content-Type", "application/json")
@@ -304,9 +346,13 @@ func executeLargestTables(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// API endpoints
 	http.HandleFunc("/db/custom-query", executeQuery)
 	http.HandleFunc("/db/long-running-queries", executeLongRunningQueries)
 	http.HandleFunc("/db/largest-tables", executeLargestTables)
+
+	// Serve Swagger documentation
+	http.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	// Start the server
 	port := ":8080"

@@ -1,0 +1,208 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "PostgreSQL database monitoring API.",
+        "title": "Database Monitoring API",
+        "contact": {
+            "name": "Andranik Sarkisyan",
+            "url": "https://www.linkedin.com/in/a-sarkisyan/",
+            "email": "andrewsarkisyan@gmail.com"
+        },
+        "version": "0.0.1"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/db/custom-query": {
+            "post": {
+                "description": "Execute a custom SQL SELECT query on the specified database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Database"
+                ],
+                "summary": "Execute Custom Query",
+                "parameters": [
+                    {
+                        "description": "Query Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.QueryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Query results",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or parameters",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/db/largest-tables": {
+            "post": {
+                "description": "Retrieve a list of the largest tables in the database by size.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Database"
+                ],
+                "summary": "Get Largest Tables",
+                "parameters": [
+                    {
+                        "description": "Largest Tables Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.LargestTablesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Largest tables information",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or parameters",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/db/long-running-queries": {
+            "post": {
+                "description": "Get details of long-running queries in a PostgreSQL database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Database"
+                ],
+                "summary": "Retrieve Long-Running Queries",
+                "parameters": [
+                    {
+                        "description": "Long-Running Queries Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.LongRunningQueriesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Long-running queries",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body or parameters",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.LargestTablesRequest": {
+            "type": "object",
+            "properties": {
+                "dsn": {
+                    "type": "string"
+                },
+                "query_limit": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.LongRunningQueriesRequest": {
+            "type": "object",
+            "properties": {
+                "dsn": {
+                    "type": "string"
+                },
+                "pg_database": {
+                    "type": "string"
+                },
+                "query_duration": {
+                    "type": "string"
+                },
+                "query_state": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.QueryRequest": {
+            "type": "object",
+            "properties": {
+                "dsn": {
+                    "type": "string"
+                },
+                "query": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
