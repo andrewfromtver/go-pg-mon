@@ -67,3 +67,32 @@ curl -X POST http://localhost:8080/db/long-running-queries \
     "query_state": "*"
   }'
 ```
+
+### `POST /db/largest-tables`
+
+This endpoint executes a `SELECT` query on a `pg_statio_user_tables` to retrieve information about the largest tables.
+
+#### Request body
+
+The request body must be a JSON object containing the following fields:
+
+- **`dsn`** (string, required): The Data Source Name (DSN) for connecting to the PostgreSQL database. Example: `"postgres://[user]:[password]@[host]/[database]"`.
+- **`query_limit`**  (integer, required): The maximum number of results to return. Must be between `1` and `100`.
+
+##### Example - request body:
+```json
+{
+  "dsn": "postgres://user:password@localhost:5432/dbname",
+  "query_limit": 10
+}
+```
+
+##### Example - curl command:
+```Bash
+curl -X POST http://localhost:8080/db/largest-tables \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dsn": "postgres://user:password@localhost:5432/dbname",
+    "query_limit": 10
+  }'
+```
